@@ -426,12 +426,12 @@ public class IndexController extends DictController {
 	                String fieldName = item.getFieldName();
 	                String fileName = FilenameUtils.getName(item.getName());
 	                String launchPath = "";
+					String imageName = System.currentTimeMillis()+ ".png";
 	                try {
 						InputStream fileContent = item.getInputStream();
 						OutputStream outputStream = null;
 						System.out.println(configInfo.getImgPath());
-						
-						launchPath = configInfo.getImgPath() +"/"+System.currentTimeMillis()+ ".png";
+						launchPath = configInfo.getMediaPath()+configInfo.getImgPath() +"/"+imageName;
 						
 						outputStream = 
 			                    new FileOutputStream(new File(launchPath));
@@ -448,7 +448,7 @@ public class IndexController extends DictController {
 						e.printStackTrace();
 					}
 	                Imgs imgs = new Imgs();
-	                imgs.setPath(launchPath);
+	                imgs.setPath(configInfo.getImgPath() +"/"+imageName);
 	                ApplicationContext ctx = new AnnotationConfigApplicationContext(SpringMongoConfig.class);
 	       		 MongoOperations mongoOperation = (MongoOperations)ctx.getBean("mongoTemplate");
 	       		mongoOperation.save(imgs);
@@ -497,7 +497,7 @@ public class IndexController extends DictController {
 		String path = ConfigInstance.getInstance().getStaticServer();
 		if (img !=null)
 		{
-			path = path + "/"+ img.getPath();
+			path = path +  img.getPath();
 			img.setPath(path);
 		}
 		String result ="";
